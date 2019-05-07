@@ -1,9 +1,9 @@
 /**
- * Defines the class TestCase, that represents a test-case 
+ * Defines the class TestCase, that represents a test-case
  * in an automatic testing program.
  *
  * Use the macros CHECK_EQUAL and CHECK_OK for testing, e.g.:
- 
+
    badkan::TestCase ("title")
    .CHECK_OK(do_something())
    .CHECK_EQUAL(sum(1,2), 3)
@@ -14,7 +14,7 @@
  * @author Erel Segal-Halevi
  * @credit Nathan Oliver: https://stackoverflow.com/a/54752705/827927
  * @since 2019-02
- * 
+ *
  */
 
 
@@ -52,7 +52,7 @@ class TestCase {
   clock_t  start_time; // time in which the test-case is constructed.
 
 public:
-   TestCase(const string& name="", ostream& output=cerr): 
+   TestCase(const string& name="", ostream& output=cerr):
      name(name),
      output(output),
      passed(0), failed(0),
@@ -62,12 +62,12 @@ public:
        std::signal(SIGTERM, catch_signal);
        std::signal(SIGSEGV, catch_signal);
      }
-  
+
   int right() const { return this->passed; }
   int wrong() const { return this->failed; }
   int total() const { return failed+passed; }
   int grade() const { return (total()==0? 0: 100*passed/total()); }
-  
+
   ostream& print(ostream& out, bool show_grade=true) const {
     double elapsed_seconds = double(clock() - start_time) / CLOCKS_PER_SEC;
     out << endl << "*** CPU time: " << elapsed_seconds << " sec.  Right: " << passed << ".  Wrong: " << failed << ". ";
@@ -80,7 +80,7 @@ public:
     print(output, /*show_grade=*/true);
     return *this;
   }
-  
+
   TestCase& print_signal(int signal)  {
     if (signal==SIGTERM) {
       output << "Your program timed out! (caught signal TERM)" << endl;
@@ -101,16 +101,16 @@ public:
 
 
   /** Checks that the given function is OK, i.e., does not throw an exception */
-  template<typename TFUNC> TestCase& check_ok(const TFUNC actual_func, const string& context) { 
+  template<typename TFUNC> TestCase& check_ok(const TFUNC actual_func, const string& context) {
     try {
       get_actual_value<TFUNC,void>(actual_func, context);
       passed++;
     } catch(...) {}
     return *this;
   }
-  
+
   /** Checks that the given function throws an exception */
-  template<typename TFUNC> TestCase& check_throws(const TFUNC actual_func, const string& context) { 
+  template<typename TFUNC> TestCase& check_throws(const TFUNC actual_func, const string& context) {
     try {
       actual_func();
       failed++;
@@ -131,11 +131,11 @@ public:
   }
 
 private:
-  
+
   string title(const string& context) {
     return name + /*" test #" + std::to_string(total()) + */ ", " + context + ": ";
   }
-  
+
   template<typename TFUNC, typename TVAL> TVAL get_actual_value(TFUNC actual_func, const string& context) {
     try {
       if (std::is_same<TVAL,void>::value) {

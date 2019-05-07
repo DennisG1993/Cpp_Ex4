@@ -1,6 +1,6 @@
 /**
  * Implementation of bull-pgia game
- * 
+ *
  * @author Erel Segal-Halevi
  * @since  2019-04
  */
@@ -25,7 +25,7 @@ namespace bullpgia {
 			if (guess.length()!=length)  // Illegal guess
 				return TECHNICAL_VICTORY_TO_CHOOSER;
 			if (guess==choice) {
-				return indexOfTurn + 1; 
+				return indexOfTurn + 1;
 			} else {
 				auto reply = calculateBullAndPgia(choice, guess);
 				guesser.learn(reply); // tell the guesser how many bull and pgia were in its latest guess
